@@ -17,7 +17,7 @@ public class Utility {
         try {
                 Class.forName("org.sqlite.JDBC");
                 connect = DriverManager.getConnection("JDBC:sqlite:c:\\SQLight\\first_database.db");
-                System.out.println("Connection is ready");
+                System.out.println("Connection with " + connect.getMetaData().getURL() + " is ready");
                 return true;
         } catch (Exception e) {
                 System.out.println(e.getMessage());
