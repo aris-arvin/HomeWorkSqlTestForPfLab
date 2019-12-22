@@ -1,9 +1,6 @@
 package ru.pflb.sql.education;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.Scanner;
 
 public class Utility {
@@ -20,14 +17,14 @@ public class Utility {
         try {
                 Class.forName("org.sqlite.JDBC");
                 connect = DriverManager.getConnection("JDBC:sqlite:c:\\SQLight\\first_database.db");
-                System.out.println("Test Connection");
+                System.out.println("Connection is ready");
                 return true;
         } catch (Exception e) {
                 System.out.println(e.getMessage());
                 return false;
         }
     }
-    // Enter name of table
+    // Enter name of table (names: "users", "cars")
     public void selectTable(){
         try{
         Scanner scanner = new Scanner(System.in);
@@ -40,17 +37,21 @@ public class Utility {
         Statement statement = connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sqlQuery);
         int columns = resultSet.getMetaData().getColumnCount();
-        String name = resultSet.getMetaData().getTableName(columns);
-        String columnName = resultSet.getMetaData().getColumnName(columns);
-    // Output data to the console
-        System.out.println("| "+name+" |");
+        String tableName = resultSet.getMetaData().getTableName(columns);
+
+        // Output data to the console
+        System.out.println("| "+tableName+" |");
+        for (int a = 1; a <=columns; a++){
+            System.out.printf("|" + resultSet.getMetaData().getColumnName(a) + "\t");
+        }
+            System.out.println("|");
+
         while(resultSet.next()){
             for (int i = 1; i <= columns; i++){
-                System.out.print("| " + resultSet.getString(i) + "\t ");
+                System.out.printf("|" + resultSet.getString(i) + "\t");
             }
-            System.out.println();
+            System.out.println("|");
         }
-        System.out.println();
 
         statement.close();
         }
